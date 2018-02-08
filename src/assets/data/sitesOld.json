@@ -1,0 +1,61 @@
+[
+    {
+        "_id": "SITE1",
+        "desc": "This is sitw 1"
+    },
+    {
+        "_id": "SITE2",
+        "desc": "This is site 2"
+    },
+    {
+    "_id": "SITE10",
+    "name": "New haven estate",
+    "bldrId": "PARTY1",
+    "devId": "PARTY1",
+    "status": "ACTIVE"
+    },
+    {
+    "_id": "SITE20",
+    "name": "New paradise estate",
+    "bldrId": "PARTY3",
+    "devId": "PARTY2",
+    "status": "ACTIVE"
+    },
+    {
+    "_id": "SITE30",
+    "name": "New cassio estate",
+    "bldrId": "PARTY2",
+    "devId": "PARTY1",
+    "status": "ACTIVE"
+    },
+    {
+    "_id": "SITE40",
+    "name": "New wodburn estate",
+    "bldrId": "PARTY3",
+    "devId": "PARTY3",
+    "status": "ACTIVE"
+    },
+    {
+    "_id": "SITE50",
+    "name": "New jungle estate",
+    "bldrId": "PARTY4",
+    "devId": "PARTY4",
+    "status": "ACTIVE"
+    },
+    {
+    "_id": "PARTY1",
+    "name": "Taylor Wimpey"
+    },
+    {
+    "_id": "PARTY2",
+    "name": "Bovis Homes"
+    },
+    {
+    "_id": "PARTY3",
+    "name": "Persimmon Developers"
+    },
+    {
+    "_id": "PARTY4",
+    "name": "Yo Mama Homes"
+    }
+]
