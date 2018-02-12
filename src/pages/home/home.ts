@@ -8,8 +8,8 @@ import { SearchPage } from '../search/search'
   templateUrl: 'home.html'
 })
 export class HomePage {
-  selectedSite: any;
-  selectedDev: any;
+  selectedSite: any = "";
+  selectedDev: any = "";
 
   callback;
 
@@ -38,5 +38,8 @@ export class HomePage {
 
   gotoDevSearch(){
 
+  }
+  repDB(){
+    this.siteProvider.repDB();
   }
 }

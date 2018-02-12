@@ -1,6 +1,7 @@
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import PouchDB from 'pouchdb';
+import PouchDBFind from 'pouchdb-find'
 import 'rxjs/Rx';
 
 /*
@@ -16,6 +17,7 @@ export class SiteProvider {
 
   constructor(public http: Http) {
     this.db = new PouchDB('BIDB');
+    PouchDB.plugin(PouchDBFind);
     console.log('Hello SiteProvider Provider');
   }
 
@@ -62,6 +64,19 @@ export class SiteProvider {
       });
   }
 
+  repDB(){
+    this.db.replicate.to("https://ec2-35-178-77-240.eu-west-2.compute.amazonaws.com:6984/bidb", {
+      live: false,
+      retry: false
+    })
+    .on('complete', function (info) {
+      console.log(info);
+    }).on('error', function (err) {
+      // handle error
+      console.log(err);
+    });
+    ;
+  }
   data: any = [{
     _id: "SITE10",
     name: "New haven estate",
