@@ -1,0 +1,30 @@
+<!--
+  Generated template for the DoSurveyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>doSurvey</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item>
+        <ion-label>Employee</ion-label>
+        <ion-select [(ngModel)]="selSurvey" [compareWith]="compareFn" #C (ionChange)="onSelect(C.value)"> 
+          <ion-option *ngFor="let item of surveys" [value]="item">{{item.doc.description}} </ion-option>
+          <!-- <ion-option>Bacon</ion-option>
+          <ion-option>Black Olives</ion-option>
+          <ion-option>Extra Cheese</ion-option>
+          <ion-option>Mushrooms</ion-option>
+          <ion-option>Pepperoni</ion-option>
+          <ion-option>Sausage</ion-option> -->
+        </ion-select>
+      </ion-item>
+
+</ion-content>

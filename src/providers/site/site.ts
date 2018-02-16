@@ -48,14 +48,35 @@ export class SiteProvider {
   }
 
   loadDB() {
-    this.getFromFile('assets/data/projects.json')
+    // this.getFromFile('assets/data/projects.json')
+    //   .then(res => {
+    //     console.log(res);
+    //     this.db.bulkDocs(res)
+    //       .then(res2 => console.log(res2))
+    //       .catch(err => console.log(err))
+    //   });
+    //   this.getFromFile('assets/data/parties.json')
+    //   .then(res => {
+    //     console.log(res);
+    //     this.db.bulkDocs(res)
+    //       .then(res2 => console.log(res2))
+    //       .catch(err => console.log(err))
+    //   });
+      this.getFromFile('assets/data/surveys.json')
       .then(res => {
         console.log(res);
         this.db.bulkDocs(res)
           .then(res2 => console.log(res2))
           .catch(err => console.log(err))
       });
-      this.getFromFile('assets/data/parties.json')
+      this.getFromFile('assets/data/surveyQuestions.json')
+      .then(res => {
+        console.log(res);
+        this.db.bulkDocs(res)
+          .then(res2 => console.log(res2))
+          .catch(err => console.log(err))
+      });
+      this.getFromFile('assets/data/surveyAnswers.json')
       .then(res => {
         console.log(res);
         this.db.bulkDocs(res)
@@ -77,48 +98,14 @@ export class SiteProvider {
     });
     ;
   }
-  data: any = [{
-    _id: "SITE10",
-    name: "New haven estate",
-    bldrId: "PARTY1",
-    devId: "PARTY1",
-    status: "ACTIVE"
-  }, {
-    _id: "SITE20",
-    name: "New paradise estate",
-    bldrId: "PARTY3",
-    devId: "PARTY2",
-    status: "ACTIVE"
-  }, {
-    _id: "SITE30",
-    name: "New cassio estate",
-    bldrId: "PARTY2",
-    devId: "PARTY1",
-    status: "ACTIVE"
-  }, {
-    _id: "SITE40",
-    name: "New wodburn estate",
-    bldrId: "PARTY3",
-    devId: "PARTY3",
-    status: "ACTIVE"
-  }, {
-    _id: "SITE50",
-    name: "New jungle estate",
-    bldrId: "PARTY4",
-    devId: "PARTY4",
-    status: "ACTIVE"
-  }, {
-    _id: "PARTY1",
-    name: "Taylor Wimpey"
-  }, {
-    _id: "PARTY2",
-    name: "Bovis Homes"
-  }, {
-    _id: "PARTY3",
-    name: "Persimmon Developers"
-  }, {
-    _id: "PARTY4",
-    name: "Yo Mama Homes"
-  }];
+
+  async getSurveys(): Promise<any>{
+    let result = await this.db.allDocs({
+      include_docs: true,
+      startkey: "SURVEYS",
+      endkey: "SURVEYS\ufff0"
+    });
+    return result;
+  }
 
 }

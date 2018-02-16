@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SiteProvider } from '../../providers/site/site';
-import { HomePage } from '../../pages/home/home';
 
 /**
  * Generated class for the SearchPage page.

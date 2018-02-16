@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { SiteProvider } from '../../providers/site/site';
-import { SearchPage } from '../search/search'
 
 @Component({
   selector: 'page-home',
@@ -27,6 +26,9 @@ export class HomePage {
 
   }
 
+  startSurvey(){
+    this.navCtrl.push ('DoSurveyPage')
+  }
   bclick() {
     this.siteProvider.loadDB();
     // this.namx = "xxx"
