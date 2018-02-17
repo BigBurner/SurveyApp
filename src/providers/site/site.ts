@@ -18,6 +18,7 @@ export class SiteProvider {
   constructor(public http: Http) {
     this.db = new PouchDB('BIDB');
     PouchDB.plugin(PouchDBFind);
+    // PouchDB.debug.enable('pouchdb:find');
     console.log('Hello SiteProvider Provider');
   }
 
@@ -106,6 +107,60 @@ export class SiteProvider {
       endkey: "SURVEYS\ufff0"
     });
     return result;
+  }
+
+  async getSurveyAs(surqId: string): Promise<any> {
+    return await this.db.find({
+      selector: {
+        _id: {$gt: 'SURVEY_ANSWERS', $lt: 'SURVEY_ANSWERS\uffff'},
+        surqId: surqId,
+        sequence: {$gt: 0}
+      }
+      ,
+      sort: ['surqId','sequence']
+    })
+  }
+
+  async getSurveyQs(survId: string): Promise<any>{
+    console.log(survId);
+    let sqId = [];
+    let rows = await this.db.find({
+      selector: {
+        _id: {$gt: 'SURVEY_QUESTIONS', $lt: 'SURVEY_QUESTIONS\uffff'},
+        survId: survId
+        ,
+        sequence: {$gt: 0}
+      }
+      ,
+      sort: ['survId','sequence']
+    });
+
+    rows.docs.forEach(element => {
+      sqId.push(this.getSurveyAs(element._id));
+    });
+
+    await Promise.all(sqId)
+    .then(res => {
+      res.forEach((res2,index) => {
+        rows.docs[index].sans = res2.docs;
+      })
+    });
+
+    return rows;
+
+  }
+
+  createAllIndexes(){
+    this.db.createIndex({
+      index: {fields: ['survId','sequence']}
+    }); 
+    this.db.createIndex({
+      index: {fields: ['surqId','sequence']}
+    }); 
+    
+    // this.db.createIndex({
+    //   index: {fields: ['sequence']}
+    // });
   }
 
 }

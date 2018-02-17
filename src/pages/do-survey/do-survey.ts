@@ -16,6 +16,7 @@ import { UserSurveys } from '../../models/userSurveys.model';
   templateUrl: 'do-survey.html',
 })
 export class DoSurveyPage {
+  selectSurvey = "Start Survey"
   surveys: any[] = [];
   surveyQs: any[] = [];
   surveyAs: any[] = [];
@@ -32,8 +33,14 @@ export class DoSurveyPage {
   }
 
   onSelect(item){
-    console.log(item);
+    console.log("sel",item);
     this.selSurvey = item;
+    this.siteProvider.getSurveyQs(item.doc._id)
+    .then(res => {
+      console.log(res); 
+      this.surveyQs = res.docs;
+      this.selectSurvey = item.doc.description;
+    })
   }
 
   compareFn(e1: any, e2: any): boolean {

@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>doSurvey</ion-title>
+    <ion-title>{{selectSurvey}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,16 +15,36 @@
 
 <ion-content padding>
     <ion-item>
-        <ion-label>Employee</ion-label>
+        <ion-label stacked>Survey</ion-label>
         <ion-select [(ngModel)]="selSurvey" [compareWith]="compareFn" #C (ionChange)="onSelect(C.value)"> 
           <ion-option *ngFor="let item of surveys" [value]="item">{{item.doc.description}} </ion-option>
-          <!-- <ion-option>Bacon</ion-option>
+          <!-- 
+          <ion-option>Bacon</ion-option>
           <ion-option>Black Olives</ion-option>
           <ion-option>Extra Cheese</ion-option>
           <ion-option>Mushrooms</ion-option>
           <ion-option>Pepperoni</ion-option>
-          <ion-option>Sausage</ion-option> -->
+          <ion-option>Sausage</ion-option> 
+          -->
         </ion-select>
       </ion-item>
+      <br/>
+      <ion-list no-lines>
+        <div *ngFor="let sq of surveyQs" text-wrap padding-bottom>
+          <div class="question">
+            <div margin>
+                {{sq.text}}
+                <div padding-left>
+                    <ion-list radio-group>
+                      <ion-item *ngFor="let sa of sq.sans">
+                        <ion-label>{{sa.textResponse}}</ion-label>
+                        <ion-radio [value]="sa._id"></ion-radio>
+                      </ion-item>
+                    </ion-list>
+                </div>    
+            </div>
+          </div>
+        </div>
+      </ion-list>
 
 </ion-content>

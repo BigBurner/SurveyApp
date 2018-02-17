@@ -1,6 +1,6 @@
 export class UserSurveys {
  
-    constructor(public title: string, public items: any[]){
+    constructor(public _id: string, public userId: string,public survId: string,public surqId: string, public suraId: string,public items: any[]){
  
     }
  

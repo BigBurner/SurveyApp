@@ -1,3 +1,11 @@
 page-do-survey {
-
+    div {
+        .question {
+            border: 2px solid gray;
+            border-radius: 25px;
+        }
+    }
+    ion-item {
+        border: 2px solid gray;
+    }
 }

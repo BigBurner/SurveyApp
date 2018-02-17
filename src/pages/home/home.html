@@ -12,6 +12,7 @@
   </p>
   <button ion-button (click)="bclick()">Load Initial Data</button>
   <button ion-button (click)="repDB()">Replicate</button>
+  <button ion-button (click)="this.siteProvider.createAllIndexes()">Create Indexes</button>
   <ion-list>
     <ion-item>
       <ion-input placeholder="Site search" name="site" [(ngModel)]="selectedSite.description" 
