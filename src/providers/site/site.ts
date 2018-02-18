@@ -38,7 +38,12 @@ export class SiteProvider {
   }
 
   async getDocById(docId) {
-    return this.db.get(docId)
+    try {
+      return await this.db.get(docId)
+    }
+    catch (err) {
+      return err.status
+    }
   }
 
   getFromFile(file: string) {
@@ -49,35 +54,35 @@ export class SiteProvider {
   }
 
   loadDB() {
-    // this.getFromFile('assets/data/projects.json')
-    //   .then(res => {
-    //     console.log(res);
-    //     this.db.bulkDocs(res)
-    //       .then(res2 => console.log(res2))
-    //       .catch(err => console.log(err))
-    //   });
-    //   this.getFromFile('assets/data/parties.json')
-    //   .then(res => {
-    //     console.log(res);
-    //     this.db.bulkDocs(res)
-    //       .then(res2 => console.log(res2))
-    //       .catch(err => console.log(err))
-    //   });
-      this.getFromFile('assets/data/surveys.json')
+    this.getFromFile('assets/data/projects.json')
       .then(res => {
         console.log(res);
         this.db.bulkDocs(res)
           .then(res2 => console.log(res2))
           .catch(err => console.log(err))
       });
-      this.getFromFile('assets/data/surveyQuestions.json')
+    this.getFromFile('assets/data/parties.json')
       .then(res => {
         console.log(res);
         this.db.bulkDocs(res)
           .then(res2 => console.log(res2))
           .catch(err => console.log(err))
       });
-      this.getFromFile('assets/data/surveyAnswers.json')
+    this.getFromFile('assets/data/surveys.json')
+      .then(res => {
+        console.log(res);
+        this.db.bulkDocs(res)
+          .then(res2 => console.log(res2))
+          .catch(err => console.log(err))
+      });
+    this.getFromFile('assets/data/surveyQuestions.json')
+      .then(res => {
+        console.log(res);
+        this.db.bulkDocs(res)
+          .then(res2 => console.log(res2))
+          .catch(err => console.log(err))
+      });
+    this.getFromFile('assets/data/surveyAnswers.json')
       .then(res => {
         console.log(res);
         this.db.bulkDocs(res)
@@ -86,21 +91,21 @@ export class SiteProvider {
       });
   }
 
-  repDB(){
+  repDB() {
     this.db.replicate.to("https://ec2-35-178-77-240.eu-west-2.compute.amazonaws.com:6984/bidb", {
       live: false,
       retry: false
     })
-    .on('complete', function (info) {
-      console.log(info);
-    }).on('error', function (err) {
-      // handle error
-      console.log(err);
-    });
+      .on('complete', function (info) {
+        console.log(info);
+      }).on('error', function (err) {
+        // handle error
+        console.log(err);
+      });
     ;
   }
 
-  async getSurveys(): Promise<any>{
+  async getSurveys(): Promise<any> {
     let result = await this.db.allDocs({
       include_docs: true,
       startkey: "SURVEYS",
@@ -112,27 +117,27 @@ export class SiteProvider {
   async getSurveyAs(surqId: string): Promise<any> {
     return await this.db.find({
       selector: {
-        _id: {$gt: 'SURVEY_ANSWERS', $lt: 'SURVEY_ANSWERS\uffff'},
+        _id: { $gt: 'SURVEY_ANSWERS', $lt: 'SURVEY_ANSWERS\uffff' },
         surqId: surqId,
-        sequence: {$gt: 0}
+        sequence: { $gt: 0 }
       }
       ,
-      sort: ['surqId','sequence']
+      sort: ['surqId', 'sequence']
     })
   }
 
-  async getSurveyQs(survId: string): Promise<any>{
+  async getSurveyQs(survId: string): Promise<any> {
     console.log(survId);
     let sqId = [];
     let rows = await this.db.find({
       selector: {
-        _id: {$gt: 'SURVEY_QUESTIONS', $lt: 'SURVEY_QUESTIONS\uffff'},
+        _id: { $gt: 'SURVEY_QUESTIONS', $lt: 'SURVEY_QUESTIONS\uffff' },
         survId: survId
         ,
-        sequence: {$gt: 0}
+        sequence: { $gt: 0 }
       }
       ,
-      sort: ['survId','sequence']
+      sort: ['survId', 'sequence']
     });
 
     rows.docs.forEach(element => {
@@ -140,24 +145,53 @@ export class SiteProvider {
     });
 
     await Promise.all(sqId)
-    .then(res => {
-      res.forEach((res2,index) => {
-        rows.docs[index].sans = res2.docs;
-      })
-    });
+      .then(res => {
+        res.forEach((res2, index) => {
+          rows.docs[index].sans = res2.docs;
+        })
+      });
 
     return rows;
 
   }
 
-  createAllIndexes(){
+  async getDocByIdPrefix(idPrefix: string, includeDocs: boolean = true) {
+    try {
+      return await this.db.allDocs({
+        include_docs: includeDocs,
+        startkey: idPrefix,
+        endkey: idPrefix+"\ufff0"
+      })
+    }
+    catch (err) {
+      throw (err);
+    }
+  }
+
+  async saveDoc(doc): Promise<any> {
+    try {
+      return await this.db.put(doc)
+    }
+    catch (err) {
+      try {
+        let docRev = await this.db.get(doc._id)
+        doc._rev = docRev._rev
+        return await this.db.put(doc)
+      }
+      catch (err2) {
+        throw err2;
+      }
+    }
+  }
+
+  createAllIndexes() {
     this.db.createIndex({
-      index: {fields: ['survId','sequence']}
-    }); 
+      index: { fields: ['survId', 'sequence'] }
+    });
     this.db.createIndex({
-      index: {fields: ['surqId','sequence']}
-    }); 
-    
+      index: { fields: ['surqId', 'sequence'] }
+    });
+
     // this.db.createIndex({
     //   index: {fields: ['sequence']}
     // });

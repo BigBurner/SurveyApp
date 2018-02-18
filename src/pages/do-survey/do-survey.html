@@ -35,10 +35,10 @@
             <div margin>
                 {{sq.text}}
                 <div padding-left>
-                    <ion-list radio-group>
+                    <ion-list radio-group #R (ionChange)="onRadioListChange(R)" [(ngModel)]="sq.suraId">
                       <ion-item *ngFor="let sa of sq.sans">
                         <ion-label>{{sa.textResponse}}</ion-label>
-                        <ion-radio [value]="sa._id"></ion-radio>
+                        <ion-radio [value]="sa._id" (ionSelect)="onAnswerSelect(sa.surqId, sa._id)"></ion-radio>
                       </ion-item>
                     </ion-list>
                 </div>    
